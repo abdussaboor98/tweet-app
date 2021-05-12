@@ -1,0 +1,10 @@
+.auth-form__card {
+  margin-top: 15vh !important;
+  width: 500px;
+}
+
+@media screen and (max-width: 520px) {
+  .auth-form__card {
+    width: 100%;
+  }
+}
