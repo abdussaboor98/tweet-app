@@ -1,0 +1,19 @@
+server:
+  port: 8099
+spring:
+  application:
+    name: tweet-app
+  data:
+    mongodb:
+      database: tweet_app
+      port: 27017
+      host: localhost
+      # authentication-database: admin
+      # username: root
+      # password: root
+      auto-index-creation: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

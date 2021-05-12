@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-TweetAppApplication<tweet-app>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.tweetapp.TweetAppApplication",
+            "projectName": "tweet-app",
+            "args": ""
+        }
+    ]
+}
