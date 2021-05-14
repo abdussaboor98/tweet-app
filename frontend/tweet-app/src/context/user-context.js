@@ -3,8 +3,8 @@ import React, { useState, createContext } from 'react';
 export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
-  const localStgUser = JSON.parse(localStorage.getItem('user'));
-  const localStgToken = JSON.parse(localStorage.getItem('token'));
+  const localStgUser = localStorage.getItem('user');
+  const localStgToken = localStorage.getItem('token');
   const [loggedInUser, setLoggedInUser] = useState(localStgUser || null);
   const [token, setToken] = useState(localStgToken || null);
 
@@ -18,12 +18,14 @@ export const UserProvider = ({ children }) => {
     setLoggedInUser(user);
   };
 
-  const value = {
+  const initialValue = {
     loggedInUser,
     setLoggedInUser: saveUser,
     token,
     setToken: saveToken,
   };
 
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={initialValue}>{children}</UserContext.Provider>
+  );
 };

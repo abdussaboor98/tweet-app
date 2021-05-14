@@ -1,7 +1,7 @@
 import React from 'react';
 
 const AllUsersPage = () => {
-  return <div></div>;
+  return <div>All Users</div>;
 };
 
 export default AllUsersPage;

@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Tweet {
-    
+
     private String id;
 
     @NotBlank
@@ -25,6 +25,8 @@ public class Tweet {
 
     @NotBlank
     private String username;
+
+    private String firstName;
 
     private Set<String> likedUsernames;
 

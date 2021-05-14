@@ -6,6 +6,8 @@ import HomePage from './pages/HomePage';
 import AllUsersPage from './pages/AllUsersPage';
 import UserDetailPage from './pages/UserDetailPage';
 import { UserContext } from './context/user-context';
+import NavigationBar from './components/Layout/NavigationBar';
+import MyTweets from './pages/MyTweets';
 
 const App = () => {
   const { loggedInUser } = useContext(UserContext);
@@ -15,15 +17,17 @@ const App = () => {
   }
 
   return (
-    <main className='container-fluid'>
-      <Router>
+    <Router>
+      <NavigationBar></NavigationBar>
+      <main className='container-lg'>
         <Switch>
           <Route path='/' exact component={HomePage} />
           <Route path='/users' exact component={AllUsersPage} />
+          <Route path='/my-tweets' exact component={MyTweets} />
           <Route path='/users/:username' exact component={UserDetailPage} />
         </Switch>
-      </Router>
-    </main>
+      </main>
+    </Router>
   );
 };
 

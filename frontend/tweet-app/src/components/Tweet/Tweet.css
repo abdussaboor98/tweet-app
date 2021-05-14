@@ -1,0 +1,19 @@
+.tweet__container {
+  border-bottom: 2px solid grey;
+}
+
+.tweet__left {
+  width: 100px;
+}
+.tweet__right {
+  /* padding: ; */
+}
+.tweet__avatar-container {
+  height: 60px;
+  width: 60px;
+  object-fit: contain;
+}
+
+.tweet__avatar {
+  height: 60px;
+}
