@@ -6,9 +6,12 @@ import HomePage from './pages/HomePage/HomePage';
 import { UserContext } from './context/user-context';
 import NavigationBar from './components/Layout/NavigationBar';
 import UserPage from './pages/UserPage/UserPage';
+import AllUsers from './pages/AllUsers/AllUsers';
+import SearchUser from './pages/SearchUser/SearchUser';
 
 const App = () => {
   const { loggedInUser } = useContext(UserContext);
+  console.log(loggedInUser);
 
   if (!loggedInUser) {
     return <AuthPage />;
@@ -21,6 +24,8 @@ const App = () => {
         <Switch>
           <Route path='/' exact component={HomePage} />
           <Route path='/users/:username' exact component={UserPage} />
+          <Route path='/users' exact component={AllUsers} />
+          <Route path='/search' exact component={SearchUser} />
         </Switch>
       </main>
     </Router>

@@ -92,7 +92,6 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
         UserEntity userEntity = usersRepo.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
         userEntity.setPassword(passwordEncoder.encode(newPassword));
-        userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
         BeanUtils.copyProperties(usersRepo.save(userEntity), user);
         return user;
     }

@@ -6,13 +6,7 @@ import {
   postNewTweetApi,
   updateTweetApi,
 } from '../services/api-service';
-import {
-  ADD_TWEET,
-  COMMENT_ON_TWEET,
-  LIKE_TWEET,
-  SET_TWEETS,
-  UPDATE_TWEET,
-} from './actionTypes';
+import { ADD_TWEET, LIKE_TWEET, SET_TWEETS, UPDATE_TWEET } from './actionTypes';
 
 export const setTweets = (tweets) => {
   return {

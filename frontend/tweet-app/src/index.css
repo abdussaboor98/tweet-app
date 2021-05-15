@@ -1,0 +1,11 @@
+.app_logo {
+  height: 50px;
+  padding: 0;
+  transform: rotateY(180deg);
+  margin-left: 15px;
+}
+
+.active {
+  color: rgb(17, 138, 175) !important;
+  font-weight: bold;
+}

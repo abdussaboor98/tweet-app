@@ -1,0 +1,25 @@
+.user__container {
+  border-bottom: 2px solid rgba(128, 128, 128, 0.253);
+}
+.user__profile {
+  width: 100%;
+  text-align: center;
+}
+.user__profile-img {
+  max-height: 25vh;
+}
+
+.user__name-link {
+  color: black;
+  text-decoration: none;
+}
+
+.user__name-link:visited {
+  color: black;
+  text-decoration: none;
+}
+
+.user__name-link:hover {
+  color: black;
+  text-decoration: underline;
+}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './AuthForm.css';
+import ForgotPassword from './ForgotPassword';
 import Login from './Login';
 import Register from './Register';
 
@@ -16,9 +17,10 @@ const AuthForm = () => {
     e.preventDefault();
     setAuthOption(e.currentTarget.value);
   };
+
   return (
     <>
-      <div className=' card mx-5 mx-auto auth-form__card'>
+      <div className=' card my-5 mx-auto auth-form__card'>
         <div className='card-body'>
           <div className='card-title text-center my-3'>
             <div className='btn-group'>
@@ -60,6 +62,15 @@ const AuthForm = () => {
                 setIsRegistered={setIsRegistered}
               />
             )}
+            <div className='w-100 text-center my-2'>
+              <a
+                className='auth-form__a-link'
+                data-bs-toggle='modal'
+                data-bs-target='#forgotPasswordModal'
+              >
+                <small>Forgot password?</small>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -68,6 +79,7 @@ const AuthForm = () => {
           You have registerd successfully! Please login using your details.
         </div>
       )}
+      <ForgotPassword />
     </>
   );
 };

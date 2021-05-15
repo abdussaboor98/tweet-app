@@ -1,19 +1,19 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { UserContext } from '../../context/user-context';
+import logo from '../../assets/logo.png';
 
 const NavigationBar = () => {
-  const { setLoggedInUser, setToken, loggedInUser } = useContext(UserContext);
+  const { logout, loggedInUser } = useContext(UserContext);
   const handleLogout = () => {
-    setToken(null);
-    setLoggedInUser(null);
+    logout();
   };
   return (
     <header>
       <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
         <div className='container-fluid'>
           <Link className='navbar-brand' to='/'>
-            Tweet App
+            <img src={logo} alt='Tweet App' className='app_logo' />
           </Link>
           <button
             className='navbar-toggler'
@@ -26,19 +26,44 @@ const NavigationBar = () => {
           <div className='collapse navbar-collapse' id='navbar'>
             <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
               <li className='nav-item'>
-                <Link className='nav-link' to='/'>
+                <NavLink
+                  className='nav-link'
+                  to='/'
+                  exact
+                  activeClassName='active'
+                >
                   Home
-                </Link>
+                </NavLink>
               </li>
               <li className='nav-item'>
-                <Link className='nav-link' to={'/users/' + loggedInUser}>
+                <NavLink
+                  className='nav-link'
+                  exact
+                  to={'/users/' + loggedInUser}
+                  activeClassName='active'
+                >
                   My Tweets
-                </Link>
+                </NavLink>
               </li>
               <li className='nav-item'>
-                <Link className='nav-link' to='/users'>
+                <NavLink
+                  className='nav-link'
+                  exact
+                  to='/users'
+                  activeClassName='active'
+                >
                   All Users
-                </Link>
+                </NavLink>
+              </li>
+              <li className='nav-item'>
+                <NavLink
+                  className='nav-link'
+                  to='/search'
+                  exact
+                  activeClassName='active'
+                >
+                  Search User
+                </NavLink>
               </li>
               <li className='nav-item'>
                 <button className='btn nav-link' onClick={handleLogout}>

@@ -30,7 +30,7 @@ const Tweet = ({ tweet }) => {
           <div className='tweet__left'>
             <div className='tweet__avatar-container mt-3 mx-auto text-center'>
               <img
-                className='tweet__avatar rounded-circle'
+                className='tweet__avatar img-thumbnail rounded-circle'
                 src={profile}
                 alt={tweet.username}
               />

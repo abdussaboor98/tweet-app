@@ -18,11 +18,19 @@ export const UserProvider = ({ children }) => {
     setLoggedInUser(user);
   };
 
+  const logout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    setToken(null);
+    setLoggedInUser(null);
+  };
+
   const initialValue = {
     loggedInUser,
     setLoggedInUser: saveUser,
     token,
     setToken: saveToken,
+    logout,
   };
 
   return (

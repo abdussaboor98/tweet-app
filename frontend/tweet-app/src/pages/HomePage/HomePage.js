@@ -1,6 +1,6 @@
 import React from 'react';
 import SideBar from '../../components/Layout/SideBar/SideBar';
-import Feed from '../../components/Feed/Feed';
+import HomeFeed from '../../components/HomeFeed/HomeFeed';
 
 const HomePage = () => {
   return (
@@ -9,7 +9,7 @@ const HomePage = () => {
         <SideBar></SideBar>
       </section>
       <div className='col-md-9'>
-        <Feed />
+        <HomeFeed />
       </div>
     </div>
   );

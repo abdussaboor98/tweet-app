@@ -1,8 +1,23 @@
-.tweet__handle {
+.message__handle {
   text-align: left;
   vertical-align: bottom;
 }
 
-.tweet__message {
+.message__name-link {
+  color: black;
+  text-decoration: none;
+}
+
+.message__name-link:visited {
+  color: black;
+  text-decoration: none;
+}
+
+.message__name-link:hover {
+  color: black;
+  text-decoration: underline;
+}
+
+.message__message {
   text-align: justify;
 }

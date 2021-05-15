@@ -13,8 +13,24 @@ export const register = (user) => {
   return axios.post(baseUrl + 'register', user);
 };
 
+export const updateForgotPassword = (username, newPassword) => {
+  return axios.patch(baseUrl + username + '/forgot', { value: newPassword });
+};
+
 export const fetchUserDetailApi = (username, token) => {
   return axios.get(baseUrl + 'user/' + username, {
+    headers: { Authorization: 'Bearer ' + token },
+  });
+};
+
+export const fetchAllUsersDetailsApi = (token) => {
+  return axios.get(baseUrl + 'users/all', {
+    headers: { Authorization: 'Bearer ' + token },
+  });
+};
+
+export const searchUsersDetailsApi = (partialUsername, token) => {
+  return axios.get(baseUrl + 'users/search/' + partialUsername, {
     headers: { Authorization: 'Bearer ' + token },
   });
 };
@@ -26,7 +42,7 @@ export const fetchAllTweetsApi = (token) => {
 };
 
 export const fetchUserTweetsApi = (username, token) => {
-  return axios.get(baseUrl + username, {
+  return axios.get(baseUrl + username + '/all', {
     headers: { Authorization: 'Bearer ' + token },
   });
 };

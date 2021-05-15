@@ -6,7 +6,7 @@ import Loader from '../Layout/Loader';
 import MessageEditor from '../MessageEditor/MessageEditor';
 import TweetList from '../TweetList/TweetList';
 
-const Feed = () => {
+const HomeFeed = () => {
   const dispatch = useDispatch();
   const { loggedInUser, token } = useContext(UserContext);
   const [newTweetMessage, setNewTweetMessage] = useState('');
@@ -16,7 +16,7 @@ const Feed = () => {
     dispatch(getAllTweets(token)).then(() => {
       setIsLoading(false);
     });
-  }, [token]);
+  }, []);
 
   const handlePostTweet = () => {
     dispatch(addTweet(loggedInUser, newTweetMessage, token));
@@ -35,14 +35,10 @@ const Feed = () => {
         />
       </div>
       <div className='row'>
-        {isLoading ? (
-          <Loader size='2rem' />
-        ) : (
-          <TweetList tweetsLoaded={!isLoading} />
-        )}
+        {isLoading ? <Loader size='2rem' /> : <TweetList />}
       </div>
     </>
   );
 };
 
-export default Feed;
+export default HomeFeed;
