@@ -15,9 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,10 +58,9 @@ public class TweetsController {
         return new ResponseEntity<>(tweets, HttpStatus.OK);
     }
 
-    @PutMapping(value = "/{username}/update/{tweetId}")
+    @PatchMapping(value = "/{username}/update/{tweetId}")
     public ResponseEntity<Tweet> getAllTweetsByUser(@PathVariable String username, @PathVariable String tweetId,
-            @RequestBody SimpleRequest request)
-            throws UnauthorisedUserAccessException, NotFoundException {
+            @RequestBody SimpleRequest request) throws UnauthorisedUserAccessException, NotFoundException {
 
         log.info("Recieved request to update tweet {}.", tweetId);
         Tweet tweet = tweetsService.updateTweet(username, request.getValue(), tweetId);
@@ -81,7 +80,7 @@ public class TweetsController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(value = "/{username}/like/{tweetId}")
+    @PatchMapping(value = "/{username}/like/{tweetId}")
     public ResponseEntity<HttpStatus> likeTweet(@PathVariable String username, @PathVariable String tweetId)
             throws UnauthorisedUserAccessException, NotFoundException {
 
@@ -91,14 +90,12 @@ public class TweetsController {
     }
 
     @PostMapping(value = "/{username}/reply/{tweetId}")
-    public ResponseEntity<HttpStatus> commentOnTweet(@PathVariable String username, @PathVariable String tweetId, @RequestBody SimpleRequest request)
-            throws UnauthorisedUserAccessException, NotFoundException {
+    public ResponseEntity<Tweet> commentOnTweet(@PathVariable String username, @PathVariable String tweetId,
+            @RequestBody SimpleRequest request) throws UnauthorisedUserAccessException, NotFoundException {
 
         log.info("Recieved request to comment on tweet {}.", tweetId);
-        tweetsService.addComment(username, tweetId, request.getValue());
-        return new ResponseEntity<>(HttpStatus.OK);
+        Tweet updatedTweet = tweetsService.addComment(username, tweetId, request.getValue());
+        return new ResponseEntity<>(updatedTweet, HttpStatus.OK);
     }
-
-
 
 }

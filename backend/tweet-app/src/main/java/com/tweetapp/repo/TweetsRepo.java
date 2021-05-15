@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TweetsRepo extends MongoRepository<TweetEntity, String> {
-    
+
+    List<TweetEntity> findAllByOrderByCreatedDateTimeDesc();
+
     List<TweetEntity> findAllByUsername(String username);
 
     Optional<TweetEntity> findByIdAndUsername(String id, String username);

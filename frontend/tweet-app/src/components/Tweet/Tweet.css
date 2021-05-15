@@ -1,13 +1,12 @@
 .tweet__container {
-  border-bottom: 2px solid grey;
+  border-bottom: 2px solid rgba(128, 128, 128, 0.253);
+  padding-bottom: 0px !important;
 }
 
 .tweet__left {
   width: 100px;
 }
-.tweet__right {
-  /* padding: ; */
-}
+
 .tweet__avatar-container {
   height: 60px;
   width: 60px;
@@ -16,4 +15,40 @@
 
 .tweet__avatar {
   height: 60px;
+}
+
+.tweet__actions {
+  color: grey;
+  font-size: 1rem;
+  border: none;
+  border-top: 2px solid rgba(128, 128, 128, 0.253);
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0);
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.tweet__actions:hover {
+  background-color: rgba(128, 128, 128, 0.253);
+  cursor: pointer;
+}
+
+.disabled {
+  cursor: unset;
+  color: rgba(0, 0, 0, 0);
+}
+
+.disabled:hover {
+  cursor: default;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.tweet__action-icon {
+  font-size: 1rem;
+  margin-right: 1rem;
+  transition: color ease-in 0.1s;
+}
+
+.tweet__comments {
+  border-bottom: 2px solid rgba(128, 128, 128, 0.253);
 }

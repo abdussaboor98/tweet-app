@@ -1,0 +1,9 @@
+.message-editor__container {
+  border-bottom: 2px solid rgba(128, 128, 128, 0.253);
+}
+.message-editor__text-area {
+  resize: none;
+}
+.message-editir__post-button {
+  width: 6rem;
+}

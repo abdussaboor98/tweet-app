@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import profile from '../../../assets/profile.png';
 import { UserContext } from '../../../context/user-context';
-import { getUserDetail } from '../../../services/api-service';
+import { fetchUserDetailApi } from '../../../services/api-service';
 import Loader from '../Loader';
 import './SideBar.css';
 
@@ -10,7 +10,7 @@ const SideBar = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    getUserDetail(loggedInUser, token).then((res) => {
+    fetchUserDetailApi(loggedInUser, token).then((res) => {
       setUser(res.data);
       setIsLoading(false);
     });

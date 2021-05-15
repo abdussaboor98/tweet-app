@@ -20,8 +20,10 @@ public class CommentEntity {
 
     private String username;
 
+    private String firstName;
+
     private String message;
 
     private LocalDateTime createdDateTime;
-    
+
 }

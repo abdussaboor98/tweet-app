@@ -13,14 +13,66 @@ export const register = (user) => {
   return axios.post(baseUrl + 'register', user);
 };
 
-export const getUserDetail = (username, token) => {
+export const fetchUserDetailApi = (username, token) => {
   return axios.get(baseUrl + 'user/' + username, {
     headers: { Authorization: 'Bearer ' + token },
   });
 };
 
-export const getAllTweets = (token) => {
+export const fetchAllTweetsApi = (token) => {
   return axios.get(baseUrl + 'all', {
     headers: { Authorization: 'Bearer ' + token },
   });
+};
+
+export const fetchUserTweetsApi = (username, token) => {
+  return axios.get(baseUrl + username, {
+    headers: { Authorization: 'Bearer ' + token },
+  });
+};
+
+export const likeTweetApi = (username, tweetId, token) => {
+  return axios.patch(
+    `${baseUrl}${username}/like/${tweetId}`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+};
+
+export const postNewTweetApi = (username, message, token) => {
+  return axios.post(
+    `${baseUrl}${username}/add`,
+    {
+      value: message,
+    },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+};
+
+export const postNewCommentApi = (username, message, tweetId, token) => {
+  return axios.post(
+    `${baseUrl}${username}/reply/${tweetId}`,
+    {
+      value: message,
+    },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+};
+
+export const updateTweetApi = (username, message, tweetId, token) => {
+  return axios.patch(
+    `${baseUrl}${username}/update/${tweetId}`,
+    {
+      value: message,
+    },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
 };

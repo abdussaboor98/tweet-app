@@ -32,11 +32,6 @@ const NavigationBar = () => {
               </li>
               <li className='nav-item'>
                 <Link className='nav-link' to={'/users/' + loggedInUser}>
-                  My Account
-                </Link>
-              </li>
-              <li className='nav-item'>
-                <Link className='nav-link' to='/my-tweets'>
                   My Tweets
                 </Link>
               </li>

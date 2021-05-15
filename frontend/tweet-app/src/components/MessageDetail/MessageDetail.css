@@ -1,0 +1,8 @@
+.tweet__handle {
+  text-align: left;
+  vertical-align: bottom;
+}
+
+.tweet__message {
+  text-align: justify;
+}

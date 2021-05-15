@@ -12,10 +12,12 @@ import lombok.NoArgsConstructor;
 public class Comment {
 
     private String id;
-    
+
     private String username;
 
     private String message;
+
+    private String firstName;
 
     private ZonedDateTime createdDateTime;
 

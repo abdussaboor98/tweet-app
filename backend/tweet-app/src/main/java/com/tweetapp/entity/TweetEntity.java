@@ -23,6 +23,8 @@ public class TweetEntity {
 
     private String username;
 
+    private String firstName;
+
     private Set<String> likedUsernames;
 
     private List<CommentEntity> comments;

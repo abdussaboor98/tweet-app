@@ -56,11 +56,15 @@ public class TweetsServiceImpl implements TweetsService {
     @Override
     public Tweet addTweet(String username, String tweetMessage)
             throws NotFoundException, UnauthorisedUserAccessException {
+
+        UserEntity userEntity = usersRepo.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
         TweetEntity tweetEntity = new TweetEntity();
         Tweet savedTweet = new Tweet();
         validateUsernameAccess(username);
         validateUsername(username);
         tweetEntity.setUsername(username);
+        tweetEntity.setFirstName(userEntity.getFirstName());
         tweetEntity.setMessage(tweetMessage);
         tweetEntity.setCreatedDateTime(LocalDateTime.now(ZoneId.of("UTC")));
         tweetEntity.setComments(new ArrayList<>());
@@ -95,12 +99,10 @@ public class TweetsServiceImpl implements TweetsService {
     @Override
     public List<Tweet> getAllTweets() {
         List<Tweet> tweets = new ArrayList<>();
-        List<TweetEntity> tweetEntities = tweetsRepo.findAll();
+        List<TweetEntity> tweetEntities = tweetsRepo.findAllByOrderByCreatedDateTimeDesc();
         tweetEntities.forEach(tweetEntity -> {
             Tweet tweet = new Tweet();
             ModelEntityMappingUtil.mapTweetEntityToModel(tweetEntity, tweet);
-            UserEntity user = usersRepo.findByUsername(tweet.getUsername()).get();
-            tweet.setFirstName(user.getFirstName());
             tweets.add(tweet);
         });
         return tweets;
@@ -110,13 +112,10 @@ public class TweetsServiceImpl implements TweetsService {
     public List<Tweet> getAllTweetsByUsername(String username) throws NotFoundException {
         List<Tweet> tweets = new ArrayList<>();
         validateUsername(username);
-        UserEntity user = usersRepo.findByUsername(username)
-                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
         List<TweetEntity> tweetEntities = tweetsRepo.findAllByUsername(username);
         tweetEntities.forEach(tweetEntity -> {
             Tweet tweet = new Tweet();
             ModelEntityMappingUtil.mapTweetEntityToModel(tweetEntity, tweet);
-            tweet.setFirstName(user.getFirstName());
             tweets.add(tweet);
         });
         return tweets;
@@ -153,6 +152,8 @@ public class TweetsServiceImpl implements TweetsService {
     public Tweet addComment(String username, String tweetId, String commentMessage)
             throws NotFoundException, UnauthorisedUserAccessException {
 
+        UserEntity userEntity = usersRepo.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
         Tweet updatedTweet = new Tweet();
         validateUsernameAccess(username);
         validateUsername(username);
@@ -160,6 +161,7 @@ public class TweetsServiceImpl implements TweetsService {
         commentEntity.setId(new ObjectId().toString());
         commentEntity.setMessage(commentMessage);
         commentEntity.setUsername(username);
+        commentEntity.setFirstName(userEntity.getFirstName());
         commentEntity.setCreatedDateTime(LocalDateTime.now(ZoneId.of("UTC")));
 
         TweetEntity tweetEntity = tweetsRepo.findById(tweetId)

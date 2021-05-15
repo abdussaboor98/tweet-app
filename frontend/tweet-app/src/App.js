@@ -1,13 +1,11 @@
 import React, { useContext } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import AuthPage from './pages/AuthPage';
-import HomePage from './pages/HomePage';
-import AllUsersPage from './pages/AllUsersPage';
-import UserDetailPage from './pages/UserDetailPage';
+import AuthPage from './pages/AuthPage/AuthPage';
+import HomePage from './pages/HomePage/HomePage';
 import { UserContext } from './context/user-context';
 import NavigationBar from './components/Layout/NavigationBar';
-import MyTweets from './pages/MyTweets';
+import UserPage from './pages/UserPage/UserPage';
 
 const App = () => {
   const { loggedInUser } = useContext(UserContext);
@@ -22,9 +20,7 @@ const App = () => {
       <main className='container-lg'>
         <Switch>
           <Route path='/' exact component={HomePage} />
-          <Route path='/users' exact component={AllUsersPage} />
-          <Route path='/my-tweets' exact component={MyTweets} />
-          <Route path='/users/:username' exact component={UserDetailPage} />
+          <Route path='/users/:username' exact component={UserPage} />
         </Switch>
       </main>
     </Router>
