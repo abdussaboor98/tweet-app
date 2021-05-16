@@ -11,7 +11,6 @@ import SearchUser from './pages/SearchUser/SearchUser';
 
 const App = () => {
   const { loggedInUser } = useContext(UserContext);
-  console.log(loggedInUser);
 
   if (!loggedInUser) {
     return <AuthPage />;

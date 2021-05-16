@@ -23,7 +23,11 @@ const SideBar = () => {
       ) : (
         <>
           <div className='sidebar__profile'>
-            <img className='w-100 rounded-circle' src={profile} alt='Profile' />
+            <img
+              className='w-100 rounded-circle img-thumbnail'
+              src={profile}
+              alt='Profile'
+            />
           </div>
           <h3 className='sidebar__details w-100 text-center'>
             {user.firstName + ' ' + user.lastName}

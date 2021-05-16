@@ -33,10 +33,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(AppConstants.API_URL_PREFIX + AuthConstants.AUTH_LOGIN_ENDPOINT).permitAll()
                 .antMatchers(AppConstants.API_URL_PREFIX + "/register").permitAll()
-                .antMatchers(AppConstants.API_URL_PREFIX + "/**/forgot").permitAll().antMatchers("/swagger-ui/*")
-                .permitAll().antMatchers("/swagger-resources/**").permitAll().antMatchers("/v2/api-docs").permitAll()
-                .antMatchers("/webjars/**").permitAll().anyRequest().authenticated().and()
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .antMatchers(AppConstants.API_URL_PREFIX + "/**/forgot").permitAll().antMatchers("/ws/**").permitAll()
+                .antMatchers("/swagger-ui/*").permitAll().antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/v2/api-docs").permitAll().antMatchers("/webjars/**").permitAll().anyRequest()
+                .authenticated().and().addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager())).sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.setAllowCredentials(true);
-        corsConfig.addAllowedOriginPattern("http://localhost:3000");
+        corsConfig.addAllowedOriginPattern("*");
         corsConfig.addAllowedHeader("*");
         corsConfig.addAllowedMethod(HttpMethod.GET);
         corsConfig.addAllowedMethod(HttpMethod.POST);

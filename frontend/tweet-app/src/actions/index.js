@@ -15,6 +15,15 @@ export const setTweets = (tweets) => {
   };
 };
 
+export const addTweet = (newTweet) => {
+  return {
+    type: ADD_TWEET,
+    payload: {
+      newTweet,
+    },
+  };
+};
+
 export const updateTweet = (tweetId, updatedTweet) => {
   return {
     type: UPDATE_TWEET,
@@ -77,17 +86,12 @@ export const likeTweet = (username, tweetId, token) => {
   };
 };
 
-export const addTweet = (username, message, token) => {
+export const postTweet = (username, message, token) => {
   return (dispatch) => {
     postNewTweetApi(username, message, token)
       .then((res) => {
         if (res.status === 201) {
-          dispatch({
-            type: ADD_TWEET,
-            payload: {
-              newTweet: res.data,
-            },
-          });
+          dispatch(addTweet(res.data));
         }
       })
       .catch((err) => {

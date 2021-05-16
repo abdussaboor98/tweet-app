@@ -28,7 +28,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             throws IOException, ServletException {
 
         String header = req.getHeader(AuthConstants.AUTH_HEADER_STRING);
-        System.out.println(header);
 
         if (header != null && header.startsWith(AuthConstants.AUTH_TOKEN_PREFIX)) {
             UsernamePasswordAuthenticationToken authentication = null;

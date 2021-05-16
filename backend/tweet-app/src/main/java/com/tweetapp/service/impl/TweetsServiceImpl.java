@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tweetapp.constant.AppConstants;
 import com.tweetapp.entity.CommentEntity;
 import com.tweetapp.entity.TweetEntity;
 import com.tweetapp.entity.UserEntity;
@@ -22,6 +25,7 @@ import com.tweetapp.util.ModelEntityMappingUtil;
 import org.bson.types.ObjectId;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -37,6 +41,12 @@ public class TweetsServiceImpl implements TweetsService {
 
     @Autowired
     private UsersRepo usersRepo;
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private void validateUsernameAccess(String passedUsername) throws UnauthorisedUserAccessException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -75,6 +85,11 @@ public class TweetsServiceImpl implements TweetsService {
         BeanUtils.copyProperties(savedTweetEntity, savedTweet);
         savedTweet.setComments(new ArrayList<>());
         savedTweet.setCreatedDateTime(DateTimeUtil.localToZonedDateTimeAtUTC(savedTweetEntity.getCreatedDateTime()));
+        try {
+            kafkaTemplate.send(AppConstants.KAFKA_TOPIC, objectMapper.writeValueAsString(savedTweet));
+        } catch (JsonProcessingException e) {
+            log.error("Error in writing new tweet to kafka topic: {}", e.getMessage());
+        }
         log.info("New tweet posted.");
         return savedTweet;
     }

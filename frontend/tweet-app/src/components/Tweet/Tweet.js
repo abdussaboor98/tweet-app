@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import profile from '../../assets/profile.png';
+import profile from '../../assets/profile.svg';
 import './Tweet.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faComment, faEdit } from '@fortawesome/free-solid-svg-icons';

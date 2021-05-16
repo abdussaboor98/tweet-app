@@ -16,4 +16,6 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: '*'
+kafka:
+  bootstrap-address: localhost:9092

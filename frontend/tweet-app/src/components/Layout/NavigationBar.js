@@ -10,7 +10,7 @@ const NavigationBar = () => {
   };
   return (
     <header>
-      <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
+      <nav className='navbar navbar-expand-md navbar-dark bg-dark w-100'>
         <div className='container-fluid'>
           <Link className='navbar-brand' to='/'>
             <img src={logo} alt='Tweet App' className='app_logo' />
@@ -66,9 +66,9 @@ const NavigationBar = () => {
                 </NavLink>
               </li>
               <li className='nav-item'>
-                <button className='btn nav-link' onClick={handleLogout}>
+                <a className='btn nav-link' onClick={handleLogout}>
                   Logout
-                </button>
+                </a>
               </li>
             </ul>
           </div>

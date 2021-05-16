@@ -23,7 +23,7 @@ const AllUsers = () => {
       {isLoading ? (
         <Loader size='2rem' />
       ) : (
-        users.map((user) => <UserDetail user={user} />)
+        users.map((user) => <UserDetail user={user} key={user.id} />)
       )}
     </div>
   );
