@@ -42,6 +42,9 @@ const ForgotPassword = ({ modalToggle }) => {
         .catch((err) => {
           console.log(err);
           setIsLoading(false);
+          setErrors(initialErrorsValue);
+          setUser(initialErrorsValue);
+          setIsPasswordChanged(true);
         });
     }
   };
