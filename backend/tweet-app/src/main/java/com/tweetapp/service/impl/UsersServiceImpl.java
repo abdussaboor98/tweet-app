@@ -36,13 +36,20 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
 
     @Override
     public User registerUser(User user) throws FieldValueAlreadyInUseException {
+        // Check if the email already exists
         if (usersRepo.findByEmail(user.getEmail()).isPresent()) {
             throw new FieldValueAlreadyInUseException(FieldValueAlreadyInUseException.EMAIL_ALREADY_IN_USE);
         }
+
+        // Check if username already exists
         if (usersRepo.findByUsername(user.getUsername()).isPresent()) {
             throw new FieldValueAlreadyInUseException(FieldValueAlreadyInUseException.USERNAME_ALREADY_IN_USE);
         }
+
+        // Set the password with the encoding
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        // Persist entity
         UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(user, userEntity);
         BeanUtils.copyProperties(usersRepo.save(userEntity), user);
@@ -66,6 +73,7 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
         List<User> users = new ArrayList<>();
         List<UserEntity> userEntities = usersRepo.findAll();
         log.info("Fetched {} users", userEntities.size());
+        // Copy entities to models
         userEntities.forEach(userEntity -> {
             User user = new User();
             BeanUtils.copyProperties(userEntity, user);
@@ -78,6 +86,7 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
     public List<User> searchByPartialUsername(String partialUsername) {
         List<User> users = new ArrayList<>();
         List<UserEntity> userEntities = usersRepo.searchByPartialUsername(partialUsername);
+        // Copy entities to models
         userEntities.forEach(userEntity -> {
             User user = new User();
             BeanUtils.copyProperties(userEntity, user);
@@ -91,6 +100,7 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
         User user = new User();
         UserEntity userEntity = usersRepo.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+        // Set new password with encoding
         userEntity.setPassword(passwordEncoder.encode(newPassword));
         BeanUtils.copyProperties(usersRepo.save(userEntity), user);
         return user;

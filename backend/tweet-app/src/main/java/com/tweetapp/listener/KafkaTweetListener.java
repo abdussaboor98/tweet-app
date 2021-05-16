@@ -1,7 +1,6 @@
 package com.tweetapp.listener;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tweetapp.constant.AppConstants;
 import com.tweetapp.model.Tweet;
@@ -24,6 +23,11 @@ public class KafkaTweetListener {
     @Autowired
     private ObjectMapper objectMapper;
 
+    /**
+     * Listens for the tweets Kafka topic and send the message to WebSocket
+     * 
+     * @param tweetString - Tweet read from Kafka topic
+     */
     @KafkaListener(topics = AppConstants.KAFKA_TOPIC, groupId = AppConstants.KAFKA_CONSUMER_GROUP_ID)
     public void listenTweets(String tweetString) {
         log.info("Received new tweet: {}" + tweetString);

@@ -48,6 +48,7 @@ public class TweetsServiceImpl implements TweetsService {
     @Autowired
     private ObjectMapper objectMapper;
 
+    // Match the username and the authenticated JWT username
     private void validateUsernameAccess(String passedUsername) throws UnauthorisedUserAccessException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String authUsername = (String) auth.getPrincipal();
@@ -57,6 +58,7 @@ public class TweetsServiceImpl implements TweetsService {
         }
     }
 
+    // Check if the username exists
     private void validateUsername(String passedUsername) throws NotFoundException {
         if (!usersRepo.findByUsername(passedUsername).isPresent()) {
             throw new NotFoundException(NotFoundException.USER_NOT_FOUND);
@@ -69,6 +71,7 @@ public class TweetsServiceImpl implements TweetsService {
 
         UserEntity userEntity = usersRepo.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.USER_NOT_FOUND));
+        // Create new Tweet
         TweetEntity tweetEntity = new TweetEntity();
         Tweet savedTweet = new Tweet();
         validateUsernameAccess(username);
@@ -81,11 +84,17 @@ public class TweetsServiceImpl implements TweetsService {
         tweetEntity.setLikedUsernames(new HashSet<>());
         tweetEntity.setEdited(false);
 
+        // Save the tweet
         TweetEntity savedTweetEntity = tweetsRepo.save(tweetEntity);
+
+        // Copy the entity to the model
         BeanUtils.copyProperties(savedTweetEntity, savedTweet);
         savedTweet.setComments(new ArrayList<>());
         savedTweet.setCreatedDateTime(DateTimeUtil.localToZonedDateTimeAtUTC(savedTweetEntity.getCreatedDateTime()));
+
+        // Post the tweet to Kafka on successful save
         try {
+            // Send the saved tweet to the Kafka topic in JSON form
             kafkaTemplate.send(AppConstants.KAFKA_TOPIC, objectMapper.writeValueAsString(savedTweet));
         } catch (JsonProcessingException e) {
             log.error("Error in writing new tweet to kafka topic: {}", e.getMessage());
@@ -101,12 +110,15 @@ public class TweetsServiceImpl implements TweetsService {
         validateUsernameAccess(username);
         validateUsername(username);
 
+        // Check if tweet exists
         TweetEntity tweetEntity = tweetsRepo.findByIdAndUsername(tweetId, username)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.TWEET_NOT_FOUND));
         tweetEntity.setMessage(tweetMessage);
         tweetEntity.setEdited(true);
 
+        // Update tweet
         TweetEntity updatedTweetEntity = tweetsRepo.save(tweetEntity);
+
         ModelEntityMappingUtil.mapTweetEntityToModel(updatedTweetEntity, updatedTweet);
         return updatedTweet;
     }
@@ -114,6 +126,7 @@ public class TweetsServiceImpl implements TweetsService {
     @Override
     public List<Tweet> getAllTweets() {
         List<Tweet> tweets = new ArrayList<>();
+        // Get tweets in descending order od crerate time
         List<TweetEntity> tweetEntities = tweetsRepo.findAllByOrderByCreatedDateTimeDesc();
         tweetEntities.forEach(tweetEntity -> {
             Tweet tweet = new Tweet();
@@ -141,6 +154,7 @@ public class TweetsServiceImpl implements TweetsService {
             throws NotFoundException, UnauthorisedUserAccessException {
         validateUsernameAccess(username);
         validateUsername(username);
+        // Check if tweet exists
         TweetEntity tweetEntity = tweetsRepo.findByIdAndUsername(tweetId, username)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.TWEET_NOT_FOUND));
         tweetsRepo.delete(tweetEntity);
@@ -154,11 +168,13 @@ public class TweetsServiceImpl implements TweetsService {
         TweetEntity tweetEntity = tweetsRepo.findById(tweetId)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.TWEET_NOT_FOUND));
         Set<String> likedUsernames = tweetEntity.getLikedUsernames();
+        // Add the username if it does not extsts or delete if it does
         if (likedUsernames.contains(username)) {
             likedUsernames.remove(username);
         } else {
             likedUsernames.add(username);
         }
+        // Save the updated likes
         tweetEntity.setLikedUsernames(likedUsernames);
         tweetsRepo.save(tweetEntity);
     }
@@ -172,6 +188,8 @@ public class TweetsServiceImpl implements TweetsService {
         Tweet updatedTweet = new Tweet();
         validateUsernameAccess(username);
         validateUsername(username);
+
+        // Create the new comment
         CommentEntity commentEntity = new CommentEntity();
         commentEntity.setId(new ObjectId().toString());
         commentEntity.setMessage(commentMessage);
@@ -179,9 +197,12 @@ public class TweetsServiceImpl implements TweetsService {
         commentEntity.setFirstName(userEntity.getFirstName());
         commentEntity.setCreatedDateTime(LocalDateTime.now(ZoneId.of("UTC")));
 
+        // Get the tweet where to add the comment
         TweetEntity tweetEntity = tweetsRepo.findById(tweetId)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.TWEET_NOT_FOUND));
         List<CommentEntity> comments = tweetEntity.getComments();
+
+        // Add the new comment to the fetched tweet
         comments.add(commentEntity);
         tweetEntity.setComments(comments);
 

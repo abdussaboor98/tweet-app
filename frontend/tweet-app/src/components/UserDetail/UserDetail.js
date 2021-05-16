@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import './UserDetail.css';
 import profile from '../../assets/profile.svg';
 import { Link } from 'react-router-dom';

@@ -7,6 +7,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.tweetapp.constant.AuthConstants;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -29,9 +30,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    @Value("${cors.allowed-origins}")
+    private String[] corsAllowedOrigin;
+
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws/live-tweets-ws").setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/ws/live-tweets-ws").setAllowedOrigins(corsAllowedOrigin).withSockJS();
     }
 
     @Override

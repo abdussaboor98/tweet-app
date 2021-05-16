@@ -5,9 +5,9 @@ spring:
     name: tweet-app
   data:
     mongodb:
-      database: tweet_app
-      port: 27017
-      host: localhost
+      database: ${MONGO_DB}
+      port: ${MONGO_PORT}
+      host: ${MONGO_HOST}
       # authentication-database: admin
       # username: root
       # password: root
@@ -18,4 +18,6 @@ management:
       exposure:
         include: '*'
 kafka:
-  bootstrap-address: localhost:9092
+  bootstrap-address: ${KAFKA_HOST}:${KAFKA_PORT}
+cors:
+  allowed-origins: http://localhost:3000

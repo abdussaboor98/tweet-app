@@ -63,13 +63,13 @@ const AuthForm = () => {
               />
             )}
             <div className='w-100 text-center my-2'>
-              <a
-                className='auth-form__a-link'
+              <button
+                className='btn btn-link auth-form__a-link'
                 data-bs-toggle='modal'
                 data-bs-target='#forgotPasswordModal'
               >
                 <small>Forgot password?</small>
-              </a>
+              </button>
             </div>
           </div>
         </div>

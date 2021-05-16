@@ -65,12 +65,15 @@ const NavigationBar = () => {
                   Search User
                 </NavLink>
               </li>
-              <li className='nav-item'>
-                <a className='btn nav-link' onClick={handleLogout}>
-                  Logout
-                </a>
-              </li>
             </ul>
+            {/* <li className='nav-item ms-auto'> */}
+            <button
+              className='btn btn-outline-secondary me-3'
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+            {/* </li> */}
           </div>
         </div>
       </nav>
