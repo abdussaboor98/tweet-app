@@ -32,7 +32,7 @@ const Login = () => {
           setIsInvalidUser(true);
           setIsFormValidated(false);
           setIsLoading(false);
-          console.error(err);
+          console.error('Login error', err);
         });
     }
   };

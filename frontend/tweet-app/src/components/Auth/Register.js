@@ -51,7 +51,7 @@ const Register = ({ setAuthOption, setIsRegistered }) => {
           }
         })
         .catch((err) => {
-          if (err.response) {
+          if (err?.response?.data?.message) {
             const message = err.response.data.message;
             console.log(message);
             if (message.includes('username is already in use')) {
@@ -70,6 +70,7 @@ const Register = ({ setAuthOption, setIsRegistered }) => {
               });
             }
           }
+          console.error(err);
           setIsLoading(false);
         });
     }

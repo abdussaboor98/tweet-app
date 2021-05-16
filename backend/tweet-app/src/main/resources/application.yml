@@ -20,4 +20,4 @@ management:
 kafka:
   bootstrap-address: ${KAFKA_HOST}:${KAFKA_PORT}
 cors:
-  allowed-origins: http://localhost:3000
+  allowed-origins: ${CORS_ALLOWED_ORIGINS}
