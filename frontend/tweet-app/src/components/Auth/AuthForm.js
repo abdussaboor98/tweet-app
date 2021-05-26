@@ -75,7 +75,10 @@ const AuthForm = () => {
         </div>
       </div>
       {isRegistered && (
-        <div className='alert alert-success mt-3' role='alert'>
+        <div
+          className='alert alert-success mt-3 text-center w-50 mx-auto'
+          role='alert'
+        >
           You have registerd successfully! Please login using your details.
         </div>
       )}
