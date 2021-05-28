@@ -51,7 +51,7 @@ const SearchUser = () => {
       {isLoading ? (
         <Loader size='2rem' />
       ) : (
-        users.map((user) => <UserDetail user={user} />)
+        users.map((user) => <UserDetail key={user.id} user={user} />)
       )}
     </div>
   );

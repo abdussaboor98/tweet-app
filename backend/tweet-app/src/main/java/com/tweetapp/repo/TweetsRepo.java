@@ -5,13 +5,15 @@ import java.util.Optional;
 
 import com.tweetapp.entity.TweetEntity;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.socialsignin.spring.data.dynamodb.repository.EnableScan;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TweetsRepo extends MongoRepository<TweetEntity, String> {
+@EnableScan
+public interface TweetsRepo extends CrudRepository<TweetEntity, String> {
 
-    List<TweetEntity> findAllByOrderByCreatedDateTimeDesc();
+    List<TweetEntity> findAll();
 
     List<TweetEntity> findAllByUsername(String username);
 

@@ -5,17 +5,19 @@ import java.util.Optional;
 
 import com.tweetapp.entity.UserEntity;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
+import org.socialsignin.spring.data.dynamodb.repository.EnableScan;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UsersRepo extends MongoRepository<UserEntity, String> {
-    
+@EnableScan
+public interface UsersRepo extends CrudRepository<UserEntity, String> {
+
     Optional<UserEntity> findByEmail(String email);
-    
+
     Optional<UserEntity> findByUsername(String username);
 
-    @Query("{'username':{'$regex':?0, $options:'i'}}")
-    List<UserEntity> searchByPartialUsername(String partialUsername);
+    List<UserEntity> findByUsernameContaining(String partialUsername);
+
+    List<UserEntity> findAll();
 }

@@ -10,13 +10,13 @@ import com.tweetapp.model.Tweet;
 import org.springframework.beans.BeanUtils;
 
 public class ModelEntityMappingUtil {
-    
+
     /**
-     * Maps the {@link TweetEntity} to {@link Tweet}.
-     * Also converts the createdDateTime in them from Zoned to Local
+     * Maps the {@link TweetEntity} to {@link Tweet}. Also converts the
+     * createdDateTime in them from Zoned to Local
      */
     public static void mapTweetEntityToModel(TweetEntity entity, Tweet model) {
-        if(model != null && entity != null) {
+        if (model != null && entity != null) {
             BeanUtils.copyProperties(entity, model);
             List<Comment> comments = new ArrayList<>();
             entity.getComments().forEach(commentEntity -> {

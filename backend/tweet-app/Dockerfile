@@ -1,7 +1,8 @@
 # BUILD STAGE
 FROM maven:3.8-jdk-8 as maven_build
 WORKDIR /app
-COPY pom.xml .    
+COPY pom.xml .
+RUN mvn dependency:go-offline
 COPY src ./src
 RUN mvn -f /app/pom.xml clean package -Dmaven.test.skip
 

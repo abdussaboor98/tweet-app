@@ -1,5 +1,6 @@
 package com.tweetapp.configuration.security;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.tweetapp.constant.AppConstants;
@@ -40,9 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(AppConstants.API_URL_PREFIX + AuthConstants.AUTH_LOGIN_ENDPOINT).permitAll()
                 .antMatchers(AppConstants.API_URL_PREFIX + "/register").permitAll()
                 .antMatchers(AppConstants.API_URL_PREFIX + "/**/forgot").permitAll().antMatchers("/ws/**").permitAll()
-                .antMatchers("/swagger-ui/*").permitAll().antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/v2/api-docs").permitAll().antMatchers("/webjars/**").permitAll().anyRequest()
-                .authenticated().and().addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .antMatchers("/actuator/**").permitAll().antMatchers("/swagger-ui/*").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll().antMatchers("/v2/api-docs").permitAll()
+                .antMatchers("/webjars/**").permitAll().anyRequest().authenticated().and()
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager())).sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
@@ -57,7 +59,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.setAllowCredentials(true);
-        corsConfig.setAllowedOrigins(corsAllowedOrigin);
+        if (corsAllowedOrigin.get(0).equals("*")) {
+            corsConfig.setAllowedOriginPatterns(Arrays.asList("*"));
+        } else {
+            corsConfig.setAllowedOrigins(corsAllowedOrigin);
+        }
         corsConfig.addAllowedHeader("*");
         corsConfig.addAllowedMethod(HttpMethod.GET);
         corsConfig.addAllowedMethod(HttpMethod.POST);

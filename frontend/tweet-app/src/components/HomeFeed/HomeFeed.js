@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { postTweet, getAllTweets, addTweet } from '../../actions';
+import { postTweet, getAllTweets } from '../../actions';
 import { UserContext } from '../../context/user-context';
 import Loader from '../Layout/Loader';
 import MessageEditor from '../MessageEditor/MessageEditor';
 import TweetList from '../TweetList/TweetList';
-import SockJsClient from '../SockJsClient/SockJsClient';
 
 const HomeFeed = () => {
   const dispatch = useDispatch();
@@ -24,12 +23,6 @@ const HomeFeed = () => {
     setNewTweetMessage('');
   };
 
-  const handleNewTweetMessage = (newTweet) => {
-    if (newTweet.username !== loggedInUser) {
-      dispatch(addTweet(newTweet));
-    }
-  };
-
   return (
     <>
       <div className='row'>
@@ -44,12 +37,6 @@ const HomeFeed = () => {
       <div className='row'>
         {isLoading ? <Loader size='2rem' /> : <TweetList />}
       </div>
-      <SockJsClient
-        url={process.env.REACT_APP_WS_CONNECT_URL}
-        subscribeEndpoint={process.env.REACT_APP_WS_TWEETS_SUB_EP}
-        headers={{ Authorization: 'Bearer ' + token }}
-        onMessage={handleNewTweetMessage}
-      />
     </>
   );
 };

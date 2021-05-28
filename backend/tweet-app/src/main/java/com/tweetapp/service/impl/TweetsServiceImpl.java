@@ -5,11 +5,10 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tweetapp.constant.AppConstants;
 import com.tweetapp.entity.CommentEntity;
 import com.tweetapp.entity.TweetEntity;
 import com.tweetapp.entity.UserEntity;
@@ -22,10 +21,8 @@ import com.tweetapp.service.TweetsService;
 import com.tweetapp.util.DateTimeUtil;
 import com.tweetapp.util.ModelEntityMappingUtil;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -41,12 +38,6 @@ public class TweetsServiceImpl implements TweetsService {
 
     @Autowired
     private UsersRepo usersRepo;
-
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     // Match the username and the authenticated JWT username
     private void validateUsernameAccess(String passedUsername) throws UnauthorisedUserAccessException {
@@ -92,13 +83,6 @@ public class TweetsServiceImpl implements TweetsService {
         savedTweet.setComments(new ArrayList<>());
         savedTweet.setCreatedDateTime(DateTimeUtil.localToZonedDateTimeAtUTC(savedTweetEntity.getCreatedDateTime()));
 
-        // Post the tweet to Kafka on successful save
-        try {
-            // Send the saved tweet to the Kafka topic in JSON form
-            kafkaTemplate.send(AppConstants.KAFKA_TOPIC, objectMapper.writeValueAsString(savedTweet));
-        } catch (JsonProcessingException e) {
-            log.error("Error in writing new tweet to kafka topic: {}", e.getMessage());
-        }
         log.info("New tweet posted.");
         return savedTweet;
     }
@@ -125,15 +109,20 @@ public class TweetsServiceImpl implements TweetsService {
 
     @Override
     public List<Tweet> getAllTweets() {
-        List<Tweet> tweets = new ArrayList<>();
+        PriorityQueue<Tweet> tweets = new PriorityQueue<>((t1, t2) -> {
+            if (t1.getCreatedDateTime().isBefore(t2.getCreatedDateTime()))
+                return 1;
+            return -1;
+        });
+
         // Get tweets in descending order od crerate time
-        List<TweetEntity> tweetEntities = tweetsRepo.findAllByOrderByCreatedDateTimeDesc();
+        List<TweetEntity> tweetEntities = tweetsRepo.findAll();
         tweetEntities.forEach(tweetEntity -> {
             Tweet tweet = new Tweet();
             ModelEntityMappingUtil.mapTweetEntityToModel(tweetEntity, tweet);
             tweets.add(tweet);
         });
-        return tweets;
+        return tweets.stream().collect(Collectors.toList());
     }
 
     @Override
@@ -189,18 +178,18 @@ public class TweetsServiceImpl implements TweetsService {
         validateUsernameAccess(username);
         validateUsername(username);
 
-        // Create the new comment
-        CommentEntity commentEntity = new CommentEntity();
-        commentEntity.setId(new ObjectId().toString());
-        commentEntity.setMessage(commentMessage);
-        commentEntity.setUsername(username);
-        commentEntity.setFirstName(userEntity.getFirstName());
-        commentEntity.setCreatedDateTime(LocalDateTime.now(ZoneId.of("UTC")));
-
         // Get the tweet where to add the comment
         TweetEntity tweetEntity = tweetsRepo.findById(tweetId)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.TWEET_NOT_FOUND));
         List<CommentEntity> comments = tweetEntity.getComments();
+
+        // Create the new comment
+        CommentEntity commentEntity = new CommentEntity();
+        commentEntity.setId(tweetId + "-" + comments.size());
+        commentEntity.setMessage(commentMessage);
+        commentEntity.setUsername(username);
+        commentEntity.setFirstName(userEntity.getFirstName());
+        commentEntity.setCreatedDateTime(LocalDateTime.now(ZoneId.of("UTC")));
 
         // Add the new comment to the fetched tweet
         comments.add(commentEntity);

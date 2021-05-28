@@ -85,7 +85,7 @@ public class UsersServiceImpl implements UsersService, UserDetailsService {
     @Override
     public List<User> searchByPartialUsername(String partialUsername) {
         List<User> users = new ArrayList<>();
-        List<UserEntity> userEntities = usersRepo.searchByPartialUsername(partialUsername);
+        List<UserEntity> userEntities = usersRepo.findByUsernameContaining(partialUsername);
         // Copy entities to models
         userEntities.forEach(userEntity -> {
             User user = new User();
