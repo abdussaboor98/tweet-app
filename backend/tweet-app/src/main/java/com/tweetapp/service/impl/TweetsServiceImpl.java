@@ -5,9 +5,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.tweetapp.entity.CommentEntity;
 import com.tweetapp.entity.TweetEntity;
@@ -109,11 +107,7 @@ public class TweetsServiceImpl implements TweetsService {
 
     @Override
     public List<Tweet> getAllTweets() {
-        PriorityQueue<Tweet> tweets = new PriorityQueue<>((t1, t2) -> {
-            if (t1.getCreatedDateTime().isBefore(t2.getCreatedDateTime()))
-                return 1;
-            return -1;
-        });
+        List<Tweet> tweets = new ArrayList<>();
 
         // Get tweets in descending order od crerate time
         List<TweetEntity> tweetEntities = tweetsRepo.findAll();
@@ -122,7 +116,13 @@ public class TweetsServiceImpl implements TweetsService {
             ModelEntityMappingUtil.mapTweetEntityToModel(tweetEntity, tweet);
             tweets.add(tweet);
         });
-        return tweets.stream().collect(Collectors.toList());
+
+        tweets.sort((t1, t2) -> {
+            if (t1.getCreatedDateTime().isBefore(t2.getCreatedDateTime()))
+                return 1;
+            return -1;
+        });
+        return tweets;
     }
 
     @Override
