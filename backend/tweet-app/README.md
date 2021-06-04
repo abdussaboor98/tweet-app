@@ -1,6 +1,6 @@
-## Set up AWS credentials
+## Set up AWS credentials for DynamoDB
 
-You need to create two files to configure AWS.
+You need to create two files to configure AWS to be able to reach DynamoDB.
 This is required in local only as these settings will be done automatically by ECS for the tasks defined. The default region will be the region ECS is configured in.
 
 The files should be created under `~/.aws`, where the tilde character (~) represents your home directory.
