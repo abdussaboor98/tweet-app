@@ -13,6 +13,9 @@ public class DynamoDBConfig {
 
     @Bean
     public AmazonDynamoDB amazonDynamoDB() {
+        // This gets the default config from cofig and credentials files creted under
+        // Windows: C:/Users/<YOUR USERNAME>/.aws
+        // Linux: <your home directory>/.aws
         return AmazonDynamoDBClientBuilder.standard().build();
     }
 }
