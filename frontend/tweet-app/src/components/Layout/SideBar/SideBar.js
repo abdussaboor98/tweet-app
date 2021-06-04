@@ -30,7 +30,7 @@ const SideBar = () => {
             />
           </div>
           <h3 className='sidebar__details w-100 text-center'>
-            {user.firstName + ' ' + user.lastName}
+            {`${user.firstName} ${user.lastName || ''}`}
           </h3>
           <p className='w-100 text-center'>@{loggedInUser}</p>
         </>

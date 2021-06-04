@@ -13,12 +13,7 @@ const NotFound404Page = () => {
               loop: true,
               autoplay: true,
               animationData: animationJson,
-              // rendererSettings: {
-              //   preserveAspectRatio: 'xMidYMid slice',
-              // },
             }}
-            //   height={400}
-            //   width={400}
           />
         </div>
         <div className='mx-auto mt-5'>
