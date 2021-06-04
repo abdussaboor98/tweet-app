@@ -4,7 +4,7 @@ WORKDIR /app
 COPY pom.xml .
 RUN mvn dependency:go-offline
 COPY src ./src
-RUN mvn -f /app/pom.xml clean package -Dmaven.test.skip
+RUN mvn -f /app/pom.xml clean package
 
 # RUN STAGE
 FROM java:8-jre-alpine
